@@ -2,6 +2,5 @@
 
 Link to project: [Graph Maker](https://eric-conn.github.io/GraphMaker)
 
-The intial goal of this project is to have a graph builder that ouputs adjacency matrices and neighborhood dictionaries from a drawing. It does not do this yet.
+The intial goal of this project is to have a graph building tool that outputs adjacency matrices and neighborhood dictionaries from a user made graph. It does not do this yet. Only the drawing part has been implemented, and with some bugs.
 
-Note: There are still some bugs.
