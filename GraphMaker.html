@@ -45,7 +45,8 @@
 
       circle {z-index: 10;}
       line {z-index: 1;
-    stroke:aquamarine}
+    /* stroke:aquamarine */
+}
       
       </style>
     <body>
@@ -335,8 +336,8 @@ const change_color = (event) => {
 
             line_count += 1
 
-            line.setAttribute('stroke','black')
-            line.setAttribute('fill','black')
+            line.setAttribute('stroke','aquamarine')
+            line.setAttribute('fill','aquamarine')
 
             selected_point.setAttribute('stroke','black')
             selected_point.setAttribute('fill','black')
@@ -361,6 +362,16 @@ const change_color = (event) => {
 
                 line.setAttribute('x2',cx)
                 line.setAttribute('y2',cy)
+
+                sel_circ.setAttribute('fill','black')
+                // sel_circ.setAttribute('stroke','green')
+                sel_circ.setAttribute('class','usermade_circ_off')
+
+
+                setTimeout(()=>{sel_circ.setAttribute('fill','black')
+                sel_circ.setAttribute('stroke','black')
+                sel_circ.setAttribute('class','usermade_circ')
+},200)
 
                 circ_select_state = 0
 
