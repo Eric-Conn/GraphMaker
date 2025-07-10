@@ -2,12 +2,12 @@
 
 <html>
     <head>
-        <meta charset="utf-8">
+        <!-- <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href=""> -->
 
         
     </head>
@@ -21,11 +21,14 @@
 .content {
   max-width: 500px;
   margin: auto;
+  
 }
     
     
     svg {
         background-color: lightskyblue;
+        position: relative;
+ 
       }
 
 
@@ -38,10 +41,11 @@
         h3{
         display: inline-block;
         }
-      /* #svg-head {z-index: 5;}
+      /* #svg-head {z-index: 5;} */
 
       circle {z-index: 10;}
-      line {z-index: 1;} */
+      line {z-index: 1;
+    stroke:aquamarine}
       
       </style>
     <body>
@@ -61,11 +65,20 @@
 
           <svg id = 'svg_head' onclick = "new_point(event);end_line(event)"  width="500"
            height="500" xmlns="http://www.w3.org/2000/svg" onmousemove = 'draw_line(event)'>
+
+           <g id = 'line_group'></g>
+
             <!-- <line 
         style="cursor:pointer"
         id="theline" 
         x1="23" y1="24" x2="87" y2="96" stroke="black" stroke-width="4"/> -->
+
+      
+
+
+
           </svg>
+          <a href="https://github.com/Eric-Conn/GraphMaker/tree/main">Check it out on github!</a>
 
 
         <script>
@@ -101,6 +114,8 @@ const change_color = (event) => {
     let line_click_state = 0
 
     let selected_point = 0
+
+    let circ_select_state = 0
 
 
 
@@ -162,6 +177,7 @@ const change_color = (event) => {
         circ.setAttribute('id','circ_id:' + String(circ_count))
         circ.setAttribute('onclick','select_circ(event);point_touch(event)')
         circ.setAttribute('data-selected','0')
+        // circ.setAttribute('style','z-index:10')
 
 
         circ_count+=1
@@ -193,6 +209,11 @@ const change_color = (event) => {
 
     const select_circ = (event) =>{
 
+        if (circ_select_state == 1){return}
+
+        circ_select_state = 1
+        
+
 
 
         if(event.target.dataset.selected == '0'){
@@ -214,8 +235,9 @@ const change_color = (event) => {
         line.setAttribute('x2',x)
         line.setAttribute('y2',y)
         line.setAttribute('id','line_id:'+String(line_count))
+        // line.setAttribute('style','z-index:5')
 
-        document.getElementById('svg_head').appendChild(line)
+        document.getElementById('line_group').appendChild(line)
 
         setTimeout(() => {line_click_state = 1},10)
 
@@ -270,6 +292,7 @@ const change_color = (event) => {
         line.setAttribute('stroke','yellow')
         line.setAttribute('fill','yellow')
         line.setAttribute('stroke-width','4')
+        
 
 
 
@@ -300,9 +323,9 @@ const change_color = (event) => {
 
         console.log('in end line:',point_touch_state)
 
+        // point_touch_state == 0 &&
 
-
-        if(point_touch_state == 0 && line_click_state == 1){
+        if( line_click_state == 1){
             // console.log('in end line:',point_touch_state)
             
             line_click_state = 0
@@ -323,20 +346,34 @@ const change_color = (event) => {
             y_raw = event.clientY
 
             console.log('idd',document.elementFromPoint(x_raw, y_raw).id)
+            console.log('idd',document.elementFromPoint(x_raw, y_raw))
 
-            // if(document.elementFromPoint(x_raw, y_raw).id == 'svg_head'){
-            //     new_point(event)
-            // }
-            // else{document.elementFromPoint(x_raw, y_raw).click();
+            if(document.elementFromPoint(x_raw, y_raw).tagName == 'line'){
+                new_point(event)
 
-            // }
+                circ_select_state = 0
+            }
+            else{
+                // document.elementFromPoint(x_raw, y_raw).click();
+                sel_circ = document.elementFromPoint(x_raw, y_raw)
+                let cx = sel_circ.getAttribute('cx')
+                let cy = sel_circ.getAttribute('cy')
+
+                line.setAttribute('x2',cx)
+                line.setAttribute('y2',cy)
+
+                circ_select_state = 0
+
+
+
+            }
 
             
 
             // document.getElementById('svg_head').click()
 
 
-            new_point(event)
+            // new_point(event)
         
         
         }
