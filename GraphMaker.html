@@ -15,6 +15,17 @@
 
     <style>
 
+.svg_class_eraser {
+
+  /* background-color: powderblue; */
+    /* border : 10 solid red;
+     */
+
+  cursor:url('eraser_cursor_clear_small_w_dot_copy.png'), auto ;
+  /* cursor: grab; */
+} 
+
+
 
 /* body { margin:0 auto; max-width: 500px; } */
 
@@ -28,8 +39,45 @@
     svg {
         background-color: lightskyblue;
         position: relative;
+        /* cursor: url('eraser_small.png') auto; */
+        /* cursor: grab auto; */
+
  
       }
+
+      .delete_tool_on {background: url('arrow_pointer_image2.png');
+    color: transparent;
+/* border-color: lightslategray; */
+}
+
+.delete_tool_off {
+background: url('eraser_cursor_clear_small.png');
+    color: transparent;
+    
+
+/* border-color: lightslategray */
+;
+/* background-color: red; */
+/* filter: opacity(50%); */
+    }
+    #delete_tool:hover{border-color:yellow;
+        
+
+
+    }
+
+    .line_delete_on:hover {stroke:yellow; stroke-width: 4}
+
+    .line_delete_connect {stroke:yellow; stroke-width: 4;fill:yellow;}
+
+/* 
+    .delete_tool_off {;
+    color: transparent;
+/* border-color: lightslategray; */
+/* background-color: red; */
+/* filter: opacity(50%); */
+
+
 
 
       
@@ -45,8 +93,11 @@
 
       circle {z-index: 10;}
       line {z-index: 1;
+    
     /* stroke:aquamarine */
 }
+
+/* .line_delete_on{outline: 3px solid green;} */
       
       </style>
     <body>
@@ -65,7 +116,7 @@
 
 
           <svg id = 'svg_head' onclick = "new_point(event);end_line(event)"  width="500"
-           height="500" xmlns="http://www.w3.org/2000/svg" onmousemove = 'draw_line(event)'>
+           height="500" xmlns="http://www.w3.org/2000/svg" onmousemove = 'draw_line(event);deletor_hover(event)' class = 'svg_class'>
 
            <g id = 'line_group'></g>
 
@@ -79,10 +130,326 @@
 
 
           </svg>
-          <a href="https://github.com/Eric-Conn/GraphMaker/tree/main">Check it out on github!</a>
-
+          
+          <div id =delete_tool_div ><button id = 'delete_tool' class="delete_tool_off">__</button></div>
+          <a href="https://github.com/Eric-Conn/GraphMaker/tree/main" style="margin-left: 19.5em">Check it out on github!</a>
+       <!-- <div class="test" >
+          <image src = 'eraser_cursor.png'  >TEST</div>
+          </div> -->
 
         <script>
+
+
+let delete_tool = 0
+
+
+
+let prev_just_on_circ = 0
+
+const deletor_hover = (e)=>{
+
+    if (delete_tool == 0){return}
+
+    x_raw = e.clientX
+    y_raw = e.clientY
+    
+
+    rect_x = document.getElementById('svg_head').getBoundingClientRect().x
+    rect_y = document.getElementById('svg_head').getBoundingClientRect().y
+
+
+    let x = x_raw - rect_x
+    let y = y_raw - rect_y
+
+
+
+    if ( !(x >= 0 && x < 500 && y >= 0 && y < 500) ){return}
+
+
+
+
+
+    if (document.elementFromPoint(x_raw,y_raw).tagName == 'circle'){
+
+        prev_just_on_circ = document.elementFromPoint(x_raw,y_raw)
+
+
+        let circ_del = document.elementFromPoint(x_raw,y_raw)
+
+        let cx = Number(circ_del.getAttribute('cx'))
+        let cy = Number(circ_del.getAttribute('cy'))
+
+
+
+
+        
+
+        element_list = document.elementsFromPoint(cx + rect_x,cy + rect_y)
+
+        
+
+        for (i = 0;i < element_list.length;i++){
+
+             if (element_list[i].tagName == 'line'){
+
+                
+
+                element_list[i].setAttribute('class','line_delete_connect')}
+                // console.log(element_list[i])
+
+
+            }
+
+        }
+        else if(prev_just_on_circ != 0){
+            let circ_del = prev_just_on_circ
+
+let cx = Number(circ_del.getAttribute('cx'))
+let cy = Number(circ_del.getAttribute('cy'))
+
+element_list = document.elementsFromPoint(cx + rect_x,cy + rect_y)
+
+
+for (i = 0;i < element_list.length;i++){
+
+if (element_list[i].tagName == 'line'){
+
+   element_list[i].setAttribute('class','line_delete_on')}
+
+
+}
+
+
+
+
+        }
+
+        
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+const element_deletor = e =>{
+    x_raw = e.clientX
+    y_raw = e.clientY
+
+    // x_raw = event.clientX
+    // y_raw = event.clientY
+
+    // console.log(document.elementFromPoint(x_raw, y_raw).tagName)
+
+    rect_x = document.getElementById('svg_head').getBoundingClientRect().x
+    rect_y = document.getElementById('svg_head').getBoundingClientRect().y
+
+    let x = x_raw - rect_x
+    let y = y_raw - rect_y
+
+    
+
+    if ( !(x >= 0 && x < 500 && y >= 0 && y < 500) ){return}
+
+    // if (e.target.tagName == 'line'){
+    //    let x1 = e.target.getAttribute('x1')
+    //    let y1 = e.target.getAttribute('y1')
+    //    let x2 = e.target.getAttribute('x2')
+    //    let y2 = e.target.getAttribute('y2')
+
+    // }
+
+    // e.target.remove()
+
+
+
+
+
+
+
+
+//     while(document.elementFromPoint(x_raw,y_raw).tagName == 'line'
+// || document.elementFromPoint(x_raw,y_raw).tagName == 'circle' ){
+
+
+
+    // e.target.remove()
+
+
+    // if (e.target.tagName == 'line'){
+    //    let x1 = e.target.getAttribute('x1')
+    //    let y1 = e.target.getAttribute('y1')
+
+
+    if (document.elementFromPoint(x_raw,y_raw).tagName == 'circle'){
+
+        let circ_del = document.elementFromPoint(x_raw,y_raw)
+
+        let cx = Number(circ_del.getAttribute('cx'))
+        let cy = Number(circ_del.getAttribute('cy'))
+        document.elementFromPoint(x_raw,y_raw).remove()
+
+        // console.log(cx+rect_x,cy + rect_y)
+        // console.log(document.elementFromPoint(cx+rect_x ,cy + rect_y))  
+
+        while (document.elementFromPoint(cx+rect_x ,cy + rect_y).tagName == 'line'){
+
+            document.elementFromPoint(cx+rect_x ,cy + rect_y).remove()
+        }
+
+
+        
+
+
+
+
+    } 
+    else if(document.elementFromPoint(x_raw,y_raw).tagName == 'line'){
+
+        let x1 = Number(e.target.getAttribute('x1'))
+       let y1 = Number(e.target.getAttribute('y1'))
+       let x2 = Number(e.target.getAttribute('x2'))
+       let y2 =Number( e.target.getAttribute('y2'))
+    //    console.log(x1+rect_x,y1+rect_y)
+    //    console.log(x2+rect_x,y2+rect_y)
+
+    
+       
+
+            document.elementFromPoint(x_raw,y_raw).remove()
+        }
+
+    
+
+
+
+
+
+
+
+
+    // elementFromPoint(x_raw,y_raw)
+//  }
+}
+
+
+
+
+
+document.getElementById('delete_tool').addEventListener('click',
+() =>{if (delete_tool == 0){
+    document.getElementsByClassName('svg_class')[0].setAttribute('class','svg_class_eraser')
+    document.getElementById('delete_tool').setAttribute('class','delete_tool_on')
+
+
+
+    let circ_list = document.getElementsByTagName('circle')
+    let line_list = document.getElementsByTagName('line')
+
+    if (circ_list.length > 0){
+    for (let i = 0; i < circ_list.length; i++) {
+        circ_list.item(i).addEventListener('click',element_deletor)
+
+    }}
+
+    if (line_list.length > 0){
+    for (let i = 0; i < line_list.length; i++) {
+        line_list.item(i).addEventListener('click',element_deletor)
+        line_list.item(i).setAttribute('class','line_delete_on')
+        
+
+
+
+    }}
+    
+
+
+
+
+      delete_tool = 1
+    
+    }
+else
+{
+
+    let circ_list = document.getElementsByTagName('circle')
+    let line_list = document.getElementsByTagName('line')
+
+    if (circ_list.length > 0){
+    }
+
+    for (let i = 0; i < circ_list.length; i++) {
+        circ_list.item(i).removeEventListener('click',element_deletor)
+
+    }
+
+    if (line_list.length > 0){
+    for (let i = 0; i < line_list.length; i++) {
+        line_list.item(i).removeEventListener('click',element_deletor)
+        line_list.item(i).setAttribute('class','')
+        line_list.item(i).setAttribute('stroke-width','4') 
+
+
+    }}
+
+    delete_tool = 0
+
+    document.getElementsByClassName('svg_class_eraser')[0]
+    .setAttribute('class','svg_class')
+    document.getElementById('delete_tool').setAttribute('class','delete_tool_off')
+
+}
+
+
+  
+    }
+)
+
+
+
+
+
+// const delete_tool_action = (event) =>{
+
+    
+
+//     if (delete_tool == 0){return}
+
+//     x_raw = event.clientX
+//     y_raw = event.clientY
+
+//     console.log(document.elementFromPoint(x_raw, y_raw).tagName)
+
+//     rect_x = document.getElementById('svg_head').getBoundingClientRect().x
+//     rect_y = document.getElementById('svg_head').getBoundingClientRect().y
+
+//     let x = x_raw - rect_x
+//     let y = y_raw - rect_y
+
+//     if (document.elementFromPoint(x_raw, y_raw).tagName != 'svg'
+//     && x >= 0 && x < 500 && y >= 0 && y < 500 ){
+
+//         while(document.elementFromPoint(x_raw, y_raw).tagName != 'svg')
+//         {
+//             document.elementFromPoint(x_raw, y_raw).remove()
+
+//         }
+
+
+//     }
+
+
+// }
+
+// document.getElementById('svg_head').addEventListener('click',delete_tool_action)
+
 
         
             
@@ -128,6 +495,8 @@ const change_color = (event) => {
 
     const new_point = (event) => {
 
+        if(delete_tool == 1){return}
+
         let check_select = 0
         
         // console.log(document.querySelector(".usermade_circ"))
@@ -155,11 +524,11 @@ const change_color = (event) => {
         
         
 
-        console.log("func called")
+        // console.log("func called")
 
         let circ = document.createElementNS("http://www.w3.org/2000/svg","circle")
         
-        console.log("circ created")
+        // console.log("circ created")
 
         rect_x = document.getElementById('svg_head').getBoundingClientRect().x
         rect_y = document.getElementById('svg_head').getBoundingClientRect().y
@@ -178,6 +547,7 @@ const change_color = (event) => {
         circ.setAttribute('id','circ_id:' + String(circ_count))
         circ.setAttribute('onclick','select_circ(event);point_touch(event)')
         circ.setAttribute('data-selected','0')
+
         // circ.setAttribute('style','z-index:10')
 
 
@@ -186,13 +556,13 @@ const change_color = (event) => {
 
         setTimeout(() => {circ.setAttribute('class', 'usermade_circ')},200);
 
-        console.log("Attributes set")
+        // console.log("Attributes set")
 
         // event.target.appendChild(circ)
 
         document.getElementById('svg_head').appendChild(circ)
 
-        console.log(circ)
+        // console.log(circ)
         // console.log( document.getElementById('svg_head'))
         },5)
 
@@ -201,7 +571,7 @@ const change_color = (event) => {
 
     const point_touch = (event) =>{
 
-        console.log('point_touch_firing')
+        // console.log('point_touch_firing')
 
         point_touch_state = 1
         setTimeout(() =>{ point_touch_state = 0},20 )
@@ -209,6 +579,7 @@ const change_color = (event) => {
     }
 
     const select_circ = (event) =>{
+        if(delete_tool == 1){return}
 
         if (circ_select_state == 1){return}
 
@@ -278,6 +649,7 @@ const change_color = (event) => {
     }
 
     const draw_line = (event) => {
+        if(delete_tool == 1){return}
 
 
         if (line_click_state == 0){return}
@@ -316,13 +688,14 @@ const change_color = (event) => {
     }
 
     const end_line = event => {
+        if(delete_tool == 1){return}
 
 
 
 
         
 
-        console.log('in end line:',point_touch_state)
+        // console.log('in end line:',point_touch_state)
 
         // point_touch_state == 0 &&
 
@@ -346,8 +719,8 @@ const change_color = (event) => {
             x_raw = event.clientX
             y_raw = event.clientY
 
-            console.log('idd',document.elementFromPoint(x_raw, y_raw).id)
-            console.log('idd',document.elementFromPoint(x_raw, y_raw))
+            // console.log('idd',document.elementFromPoint(x_raw, y_raw).id)
+            // console.log('idd',document.elementFromPoint(x_raw, y_raw))
 
             if(document.elementFromPoint(x_raw, y_raw).tagName == 'line'){
                 new_point(event)
@@ -391,6 +764,8 @@ const change_color = (event) => {
     
 
         }
+
+    
 
 
     
